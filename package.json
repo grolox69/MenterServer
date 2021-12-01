@@ -16,7 +16,7 @@
     "dev": "NODE_ENV=dev nodemon -r tsconfig-paths/register src/app.ts",
     "build": "tsc -p .",
     "test": "NODE_ENV=test mocha --check-leaks -r ts-node/register -r tsconfig-paths/register \"src/test/**/*.spec.ts\"",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "keywords": [],
   "author": "Karl Gharios",
