@@ -6,10 +6,6 @@ import booking from "./booking";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response, next: NextFunction) => {
-    res.send("Menter Backend")
-});
-
 // Routes
 router.use("/auth", auth);
 router.use("/dashboard", dashboard);
