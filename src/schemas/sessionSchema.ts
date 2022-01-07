@@ -1,27 +1,24 @@
 import mongoose, { Schema } from "mongoose";
 
-const eventSchema: Schema = new mongoose.Schema({
-    title: {
-		type: String,
-		required: true,
-		default: "New Event",
-	},
+const sessionSchema: Schema = new mongoose.Schema({
 	date: {
 		type: Date,
 		required: true,
 		default: Date.now(),
 	},
-	// Event duration in minutes
-	duration: {
-		type: Number,
-		required: true,
-		default: 30,
-		min: 0,
-	},
     isCanceled: {
 		type: Boolean,
-		required: true,
+		required: false,
+		default: false
 	},
+	guest: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	},
+	sessionType: {
+		type: Schema.Types.ObjectId,
+		ref: 'SessionType'
+	}
 });
 
-export default eventSchema;
+export default sessionSchema;

@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import { URL } from "url";
-import sessionTypeSchema from "schemas/sessionTypeSchema";
 
 const validateEmail = function (email: string) {
 	const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -80,16 +79,13 @@ const userSchema: Schema = new mongoose.Schema({
 		minLength: 1,
 		maxLength: 255
 	},
-    rating: {
-        type: Number,
-        required: false,
-        default: 0,
-        min: 0,
-        max: 5
-    },
 	sessionTypes: [{
 		type: Schema.Types.ObjectId,
 		ref: 'SessionType' 
+	}],
+	sessions: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Session' 
 	}]
 });
 

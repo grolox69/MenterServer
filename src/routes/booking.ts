@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
-import SessionType from "models/sessionTypeModel";
 import User from "models/userModel";
+import SessionType from "models/sessionTypeModel";
+import Session from "models/sessionModel";
 
 const router = Router();
 
@@ -36,7 +37,26 @@ router.get("/:vanity_name/:slug", (req: Request, res: Response) => {
 });
 
 router.post("/:vanity_name/:slug", (req: Request, res: Response) => {
-	res.end()
+	const guest = req.body.guest
+    const sessionType = req.body.sessionType
+    const newSession = new Session(req.body)
+    newSession.save().then(() => {
+        User.findById(guest).then((user) => {
+          user.sessions.push(newSession._id);
+          user.save().then(() => {
+            SessionType.findById(sessionType).then((sessionType) => {
+                User.findById(sessionType.owner).then((owner) =>{
+                    owner.sessions.push(newSession._id);
+                    owner.save().then(() => {
+                        res.status(200).json({success: true});
+                    })
+                })
+            })
+          })
+        });
+    }).catch((err: Error) => {
+        res.status(400).json({success: false, msg: 'Session Type creation failed'})
+    })
 });
 
 export default router;
