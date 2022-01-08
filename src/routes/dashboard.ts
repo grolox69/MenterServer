@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
-import SessionType from "models/sessionTypeModel";
 import User from "models/userModel";
+import SessionType from "models/sessionTypeModel";
+import Session from "models/sessionModel";
 
 const router = Router();
 
@@ -74,11 +75,41 @@ router.post("/session-types/disable-enable/:id", (req: Request, res: Response) =
 });
 
 router.get("/bookings", (req: Request, res: Response) => {
-	res.end();
+  User.findById(req.currentUser._id).populate('sessions').then( async (user) => {
+    
+    const getData = async () => {
+      return Promise.all(user.sessions.map((s: any) => {
+        return s.populate('guest').then(async (session: any) => {
+          return await session.populate('sessionType')
+        })
+      }))
+      
+    }
+    getData().then(sessions => {
+      const data = Promise.all(sessions.map(async (session: any) => {
+        return await session.populate('sessionType.owner')
+      }))
+      data.then((d) => {
+        res.status(200).json(d);
+      })
+    })
+    
+  }).catch((err) => {
+    console.log(err)
+    res.status(400).json({success: false, msg: err.message});
+  })
 });
 
 router.post("/bookings/cancel/:event_id", (req: Request, res: Response) => {
-	res.end();
+	Session.findById(req.params.id).then((session) => {
+    session.isCanceled = true;
+
+    session.save().then((result: any) => {
+      res.status(200).json({success: true, session: session})
+    })
+  }).catch(() => {
+    res.status(400).json({success: false, msg: 'Session failed to update!'})
+  })
 });
 
 export default router;

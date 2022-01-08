@@ -1,11 +1,11 @@
 {
-  "name": "server-template",
+  "name": "menter-server",
   "version": "1.0.0",
-  "description": "Menter Server 1.0",
+  "description": "This is menter's backend server.",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/username/repository.git"
+    "url": "git://github.com/grolox69/MenterServer.git"
   },
   "engines": { 
     "node": "14.17.4" 

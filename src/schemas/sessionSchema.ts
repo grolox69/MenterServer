@@ -21,4 +21,8 @@ const sessionSchema: Schema = new mongoose.Schema({
 	}
 });
 
+sessionSchema.virtual("isUpcoming").get(function (this: any) {
+	return this.date >= Date.now() && !this.isCanceled;
+});
+
 export default sessionSchema;
