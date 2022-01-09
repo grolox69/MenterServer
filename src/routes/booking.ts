@@ -20,7 +20,7 @@ router.get("/:vanity_name", (req: Request, res: Response) => {
 });
 
 router.get("/:vanity_name/:slug", (req: Request, res: Response) => {
-	User.findOne({ vanity_name: req.params.vanity_name }).populate('sessionTypes').then((user) => {
+	User.findOne({ vanity_name: req.params.vanity_name }).populate('sessionTypes').populate('sessions').then((user) => {
         if (user) {
             if (user.sessionTypes.length != 0) {
 				const sessionType = user.sessionTypes.find(({ slug }: any) => slug === req.params.slug) || null;
